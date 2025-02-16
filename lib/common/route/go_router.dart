@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../technical/view/technical_answer_screen.dart';
 import '../../technical/view/technical_interview_screen.dart';
 
 class AppTransitions {
@@ -16,8 +17,10 @@ class AppTransitions {
         const end = Offset.zero;
         const curve = Curves.fastEaseInToSlowEaseOut;
 
-        final tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
         final offsetAnimation = animation.drive(tween);
         return SlideTransition(position: offsetAnimation, child: child);
       },
@@ -47,6 +50,11 @@ final GoRouter router = GoRouter(
       path: '/mainpage',
       name: TechnicalScreen.routeName,
       builder: (context, state) => const TechnicalScreen(),
+    ),
+    GoRoute(
+      path: '/technicalanswer',
+      name: TechnicalAnswerScreen.routeName,
+      builder: (context, state) => const TechnicalAnswerScreen(),
     ),
   ],
 );

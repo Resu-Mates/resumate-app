@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:resumate_fe/technical/view/technical_answer_screen.dart';
 
 final selectedFileProvider = StateProvider<File?>((ref) => null);
 final isLoadingProvider = StateProvider<bool>((ref) => false);
@@ -12,7 +15,8 @@ class TechnicalScreen extends ConsumerStatefulWidget {
   const TechnicalScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TechnicalScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _TechnicalScreenState();
 }
 
 class _TechnicalScreenState extends ConsumerState<TechnicalScreen> {
@@ -29,9 +33,9 @@ class _TechnicalScreenState extends ConsumerState<TechnicalScreen> {
         ref.read(selectedFileProvider.notifier).state = file;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('파일 선택 중 오류가 발생했습니다: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('파일 선택 중 오류가 발생했습니다: $e')));
     } finally {
       ref.read(isLoadingProvider.notifier).state = false;
     }
@@ -77,7 +81,11 @@ class _TechnicalScreenState extends ConsumerState<TechnicalScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.file_copy, size: 72, color: Colors.orange),
+                            Icon(
+                              Icons.file_copy,
+                              size: 72,
+                              color: Colors.orange,
+                            ),
                             SizedBox(height: 16),
                             Text(
                               selectedFile != null
@@ -98,7 +106,9 @@ class _TechnicalScreenState extends ConsumerState<TechnicalScreen> {
                           child: Container(
                             color: Colors.white.withOpacity(0.7),
                             child: Center(
-                              child: CircularProgressIndicator(color: Colors.orange),
+                              child: CircularProgressIndicator(
+                                color: Colors.orange,
+                              ),
                             ),
                           ),
                         ),
@@ -107,9 +117,12 @@ class _TechnicalScreenState extends ConsumerState<TechnicalScreen> {
                 ),
                 SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: (selectedFile != null && !isLoading) ? () {
-                    // TODO: 파일이 선택되었을 때 AI 면접 시작 로직 구현
-                  } : null,
+                  onPressed:
+                      (selectedFile != null && !isLoading)
+                          ? () {
+                            context.goNamed(TechnicalAnswerScreen.routeName);
+                          }
+                          : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     foregroundColor: Colors.white,
